@@ -1,0 +1,137 @@
+ /**获取tablayout 某个子view**/
+ public View getTabView(int position){
+        View v = null;
+        TabLayout.Tab tab = mTab.getTabAt(position);
+        Field view=null;
+        try {
+            view=TabLayout.Tab.class.getDeclaredField("mView");
+        } catch (NoSuchFieldException e) {
+            e.printStackTrace();
+        }
+        view.setAccessible(true);
+        try {
+            v= (View) view.get(tab);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        return v;
+    }
+
+
+    ///封greendao and zxing
+
+    tagGroup:标签控件
+    https://github.com/2dxgujun/AndroidTagGroup
+
+    //popuwindo +taggroup 要延迟设置tag
+
+    //安卓方法数超过65k处理
+    android { compileSdkVersion 21 buildToolsVersion "21.1.0"
+
+    1.
+    defaultConfig {
+        ...
+        minSdkVersion 14
+        targetSdkVersion 21
+        ...
+
+        // Enabling multidex support.
+        multiDexEnabled true
+    }
+        ...
+    }
+    2.
+    dependencies { compile 'com.android.support:multidex:1.0.0' } 
+    3.让application 继承MultiDexApplication 或者 
+    @Override 
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base); MultiDex.install(this);
+    }
+
+    但随着一些SDK的引入，导致classes2.dex文件达到了200+KB，测试发现不少机型启动ANR、Crash，或者启动时间过长，回去看了下Android官方指出的MultiDex存在的问题，嗯，发现基本都是描述里提到的那些坑(启动时间过长、找不到类)！
+
+    我们实际测试中发现首次启动classes2.dex加载需要1~2秒，非首次启动classes2.dex加载只需要几十毫秒左右。这可能就是为什么classes2.dex不能太大的一个原因。
+    还有就是会可能出现anr和crash
+
+    坑太多 不写了http://blog.csdn.net/richie0006/article/details/51103976
+                美团技术团队：http://tech.meituan.com/mt-android-auto-split-dex.html
+                github一款插件：https://github.com/TangXiaoLv/Android-Easy-MultiDex
+
+
+//7.7封装mvp框架
+
+interface baseView:
+一些常用的ui显示隐藏
+etc：吐司，加载框等
+
+interface basePresenter:
+interface Presenter<V extends BaseView>
+//绑定ui的view接口
+void attachView(V BaseView);
+//进行解绑避免ui销毁了空指针
+void detachView();
+//如果有结合rx调用的话：
+//往CompositeDisposable里面添加Disposiable
+void addSubscrebe(Disposiable s){
+    if(composite==null){
+        composite = new CompositeDisposable();
+    }
+    composite.add(s);
+}
+//当ui销毁时调用取消掉所有下游接受信息
+//在detachView()里面调用即可
+void unSubscrebe(){
+    if(composite!=null){
+        compsite.cancel();
+    }
+}
+
+BasePresenter<V extends BaseView> implements Presenter<V>{
+    @Override
+    public void attachView(V mvpView) {
+        this.mvpView = mvpView;
+    }
+    @Override
+    public void detachView() {
+         mvpView = null;
+         //如果有用到rx
+         //unSubscrebe();
+    }
+    /**
+     * 判断 view是否为空
+     * @return
+     */
+    public  boolean isAttachView(){
+        return mvpView != null;
+    }
+    /**
+     * 返回目标view
+     * @return
+     */
+    public  V getMvpView(){
+        return mvpView;
+    }
+}
+
+
+//其他业务presenter 要继承 basePersenter
+etc:public class LoginPresenter extends BasePresenter<LoginView> implements ILoginPresenter
+
+
+//baseActivity:
+BaseMvpActivity<P extends Presenter<V>,V extends BaseMvpView>{
+    //其他act实现该方法 传入presenter
+    protected abs... P getPresenter();
+    //在start方法里建立链接
+     @Override
+    protected void onStart() {
+        super.onStart();
+        presenter.attachView((V)this);//presenter与view断开连接
+    }
+    //destroy里销毁链接避免泄露
+     @Override
+    protected void onDestroy() {
+        presenter.detachView();
+        super.onDestroy();
+    }
+}
