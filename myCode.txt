@@ -135,3 +135,12 @@ BaseMvpActivity<P extends Presenter<V>,V extends BaseMvpView>{
         super.onDestroy();
     }
 }
+
+
+//retrofit 2+rxJava 2
+异常可以使用map操作符处理
+当code!=0或其他时
+抛出一个自定义的异常
+再在observer 的onError()方法中处理 判断异常类型并做出对应操作
+
+如果没有使用rxjava的话 可以选择重写一个工厂在结果转换的过程中判断code并抛出异常
