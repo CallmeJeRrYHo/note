@@ -144,3 +144,39 @@ BaseMvpActivity<P extends Presenter<V>,V extends BaseMvpView>{
 再在observer 的onError()方法中处理 判断异常类型并做出对应操作
 
 如果没有使用rxjava的话 可以选择重写一个工厂在结果转换的过程中判断code并抛出异常
+
+
+
+Html
+ https://github.com/PrivacyApps/html-textview 解析html格式的tv
+ richText 解析html加Markdown
+ https://github.com/jhy/jsoup 获取html中的某个元素   
+ 关于html图片居中:http://blog.csdn.net/BestZhuRuicheng/article/details/52558891?locationNum=6
+
+关于fragment
+    https://github.com/YoKeyword/Fragmentation/blob/master/README_CN.md
+    http://www.jianshu.com/p/d9143a92ad94
+
+7.0适配：
+        <provider
+            android:name=".provider.MyProvider"  //自己重写一个provider继承fileProvider
+            android:authorities="${applicationId}.fileprovider"
+            android:grantUriPermissions="true"
+            android:exported="false">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
+xml文件格式
+<resources>
+    <paths>
+        <external-path path="" name="camera_photos" />
+    </paths>
+</resources>
+
+
+
+推流：
+    重要！！！！！！！！！！！！！
+    如果使用腾讯推流sdk 服务器使用自己的话需要添加：mLivePushConfig.enableNearestIP(false);
