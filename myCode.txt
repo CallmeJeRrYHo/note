@@ -180,3 +180,41 @@ xml文件格式
 推流：
     重要！！！！！！！！！！！！！
     如果使用腾讯推流sdk 服务器使用自己的话需要添加：mLivePushConfig.enableNearestIP(false);
+
+
+效果
+	关于滑动图片渐渐高斯模糊的做法：
+		相同大小的2个imgeview 加载同一张图片，底层的加上高斯模糊特效，滑动是让上层iv透明度渐渐变0实现高斯模糊效果
+		  <android.support.design.widget.CollapsingToolbarLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:layout_scrollFlags="scroll|exitUntilCollapsed"
+                    android:fitsSystemWindows="true"
+                    app:contentScrim="?attr/colorPrimary"
+                    app:expandedTitleMarginStart="48dp"
+                    app:expandedTitleMarginEnd="64dp">
+
+                    <ImageView
+                        android:id="@+id/iv_theme_child_blur"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="centerCrop"
+                        android:fitsSystemWindows="true"
+                        app:layout_collapseMode="parallax" />  //视差感觉！！
+                    <ImageView
+                        android:id="@+id/iv_theme_child_origin"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scaleType="centerCrop"
+                        android:fitsSystemWindows="true"
+                        app:layout_collapseMode="parallax" />
+                    <TextView
+                        android:id="@+id/tv_theme_child_des"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="bottom|end"
+                        android:textColor="@android:color/white"
+                        android:textSize="16sp"
+                        android:layout_margin="12dp"
+                        />
+                </android.support.design.widget.CollapsingToolbarLayout>
