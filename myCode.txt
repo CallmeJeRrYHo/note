@@ -218,3 +218,80 @@ xml文件格式
                         android:layout_margin="12dp"
                         />
                 </android.support.design.widget.CollapsingToolbarLayout>
+
+
+
+dagger2+butterknife冲突问题：
+	 /* 解决Dagger2跟ButterKnife的冲突 */
+    packagingOptions {
+        exclude 'META-INF/services/javax.annotation.processing.Processor'
+    }
+    //配置ButterKnife:注意使用compile导包 : compile会编译到最后的APK或library，apt不会
+	compile 'com.jakewharton:butterknife-compiler:8.6.0'
+	
+	 //Dagger2的使用注意使用provided引用butterKnife中的library解决冲突
+  	compile 'org.glassfish:javax.annotation:10.0-b28'
+  	compile 'com.google.dagger:dagger:2.5'
+  	provided 'com.google.dagger:dagger-compiler:2.5'
+
+
+ rxjava:
+  使用flowable时应该在Subscriber的onSubscribe(Subscription s) 方法中调用s.request(int num);
+  来告诉上游下游的处理能力，否则在同一线程中会抛出异常，在不同线程中下游将无法收到信息
+  背压：如果flowable不是自己创建的情况下可以用：
+  		.onBackpressureBuffer()
+		.onBackpressureDrop()
+		.onBackpressureLatest()
+
+使用自定义toolbar NavigationIcon不居中：
+	设置高度的同时 设置minHeight minHeight决定了icon的基准线
+		
+关于沉浸式状态栏的一些问题：http://blog.csdn.net/brian512/article/details/52096445
+沉浸式状态栏中输入法挡住输入框：
+	在输入框的所在的跟布局加上android:fitsSystemWindows="true"
+软键盘弹出时toolbar标题不见了：
+	给子布局加入scrollview包裹
+
+retrofit:
+	需要传入json格式字符串是 使用@POST @Field并且加上@FormUrlEncoded
+自定义 menu
+	http://blog.csdn.net/yanzhenjie1003/article/details/51902796
+
+//toolbar
+https://toutiao.io/posts/9akdvw/preview
+//设置toolbar内容距离左边框的距离
+ <style name="my_toolbar" parent="Base.Widget.AppCompat.ActionBar">
+ 		<item name="android:paddingLeft">14dp</item>   //toolbar内的子元素好像都会受到影响
+        <item name="contentInsetStart">14dp</item>
+        <item name="contentInsetStartWithNavigation">14dp</item>
+</style>
+<android.support.v7.widget.Toolbar
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+  	......
+    style="@style/my_toolbar">
+
+//设置返回按钮的padding
+ <style name="myToolbarNavigationButtonStyle" parent="@style/Widget.AppCompat.Toolbar.Button.Navigation">
+        <item name="android:minWidth">0dp</item>
+        <item name="android:paddingLeft">14dp</item>
+        <item name="android:paddingRight">14dp</item>
+        <item name="android:scaleType">centerInside</item>
+<style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+       ......
+        <item name="toolbarNavigationButtonStyle">@style/myToolbarNavigationButtonStyle</item>
+</style>
+
+//引用不同的包出现的问题
+java.lang.NoClassDefFoundError: android.support.v4.animation.AnimatorCompatHelper
+再build根加上一下代码
+configurations.all {
+    resolutionStrategy.eachDependency { DependencyResolveDetails details ->
+        def requested = details.requested
+        if (requested.group == 'com.android.support') {
+            if (!requested.name.startsWith("multidex")) {
+                details.useVersion '24.1.0'
+            }
+        }
+    }
+}
