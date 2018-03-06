@@ -1,0 +1,28 @@
+一、String,StringBuffer与StringBuilder的区别??
+1.stirng是不可变的对象，每次更变都等于新建一个对象，引用过多容易导致GC，影响性能。
+	e. String a=“abc”;
+		String b=“dce”;
+		String c=a+b;
+	注意：String a=“a”+“b”+“c”; 其实相当于String a=“abc”，这时会比使用StringBuffer快，
+	一般情况下StringBuffer>String; 
+2.StringBuffer每次进行修改的都是自己本身，不会创建新对象，同时它是线程安全的。
+3.StringBuilder是一个不保证同步的类，它的使用方法基本与StringBuffer一样，速度比StringBuffer快，在单线程中建议使用StringBuilder>StringBuffer>String;
+二、什么是内部类？内部类有什么作用？
+1.内部类可以防止包内的其他类访问，内部类就是定义在类里面的类，内部类的方法可以访问外部类里面的变量，包括私有变量。
+三、抽象类和接口区别
+1.抽象类是用来提取子类中的通用特性，不能被实例化，只能作为子类的超类。
+2.接口是抽象方法的集合，一个类如果继承了一个接口，必须把接口的全部方法进行实现
+3.抽象类可以实现方法，接口不能实现放
+4.一个使用extends，一个使用implements
+5.抽象类可以有构造器，接口不能有构造
+6.抽象类方法有pub，pri，pro，接口所有都是pub
+7.抽象类只能继承一个，接口可以继承多个
+四、父类的静态方法能否被子类重写
+不能被重写，静态方法在运行时已经被分配，可以说是被写死了
+五、关于保活
+黑色保活：使用广播唤醒。
+		  1.比如开机广播，拍照广播等 （安卓N已经取消了大部分广播）
+		  2.sdk保活 比如接入了微信sdk会唤醒微信
+		  3.某个公司的app可能互相之间相互唤醒
+灰色保活：利用系统漏洞
+https://www.jianshu.com/p/63aafe3c12af

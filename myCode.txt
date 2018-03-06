@@ -295,3 +295,21 @@ configurations.all {
         }
     }
 }
+
+
+as 3.0 使用butterknife：
+只需要2个就可以
+	compile 'com.jakewharton:butterknife:8.8.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+
+Android Studio3.0 Error:Execution failed for task ':app:javaPreCompileDebug' 错误
+
+	android {
+    ...
+    defaultConfig {
+        ...
+        //添加如下配置就OK了
+        javaCompileOptions { annotationProcessorOptions { includeCompileClasspath = true } }
+    }
+    ...
+}
