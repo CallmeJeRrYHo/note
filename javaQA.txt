@@ -26,3 +26,7 @@
 		  3.某个公司的app可能互相之间相互唤醒
 灰色保活：利用系统漏洞
 https://www.jianshu.com/p/63aafe3c12af
+
+1、你用过HashMap吗？什么是HashMap？你为什么用到它？
+
+用过，HashMap是基于哈希表的Map接口的非同步实现，它允许null键和null值，且HashMap依托于它的数据结构的设计，存储效率特别高，这是我用它的原因

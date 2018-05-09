@@ -313,3 +313,13 @@ Android Studio3.0 Error:Execution failed for task ':app:javaPreCompileDebug' 错
     }
     ...
 }
+
+
+Cannot call this method while RecyclerView is computing a layout or scrolling android.support.v7.widget.RecyclerView
+
+ getRecyclerView().post(new Runnable() {
+                    @Override
+                    public void run() {
+                        notifyDataSetChanged();
+                    }
+                });
