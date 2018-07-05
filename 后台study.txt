@@ -12,3 +12,8 @@
 	
 	因此在编写mybatis的映射语句时，尽量采用“#{xxx}”这样的格式。若不得不使用“${xxx}”这样的参数，要手工地做好过滤工作，来防止sql注入攻击。
 
+
+2.抢单实现，mysql自带行锁 更具version或者订单状态判断，修改后同时更改
+	redis 加锁读取ky 之后remove掉 k，实现第一层筛选
+	private static Object[] lockOj=new Object[length];
+	锁住  lockOj[订单id%lenth];

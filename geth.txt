@@ -1,0 +1,35 @@
+生成合约java：https://www.sohu.com/a/218435252_783969
+
+
+1.编写合约
+2.https://ethereum.github.io/browser-solidity/#optimize=false&version=soljson-v0.4.24+commit.e67f0147.js
+生成合约，复制abi 生成json文件 缺失合约名字{"contractName":"mc","abi":[]}
+3.生成java类D:\Downloads\web3j-3.2.0\web3j-3.2.0\bin>web3j truffle generate C:\Users\Adminis
+trator\Desktop\mc.json -o C:\Users\Administrator\Desktop -p com.your.organisatio
+n.name
+4.缺失生效时间 复制“object”到java类中的BINARY 
+
+
+
+web3j使用
+初始化：Web3j web3 = Web3j.build(new HttpService());
+geth开启时需要: --rpc --datadir  <data>  --networkid 1108 console     ps:1108数值要相同
+1.创建钱包：
+WalletUtils.generateNewWalletFile("123", new File("d:/geth/privatechain/data0/keystore/"), false);
+2.获取授权
+WalletUtils.loadCredentials("123", "d:/geth/privatechain/data0/keystore/" + fileName);
+3.转账
+TransactionReceipt transactionReceipt= Transfer.sendFunds(web3,base,"0xa8da44F712B089bae7D88121e93F4E0Bb9EC1d74", BigDecimal.valueOf(1500),Convert.Unit.ETHER).send();
+4.获取账号余额
+EthGetBalance ethGetBalance=web3.ethGetBalance(base.getAddress(), DefaultBlockParameterName.LATEST).send();
+5.使用合约
+生成合约后：
+Mc contract =Mc.deploy(web3,credentials,Contract.GAS_LIMIT, Contract.GAS_LIMIT).send();
+String send = contract.get().send();     //改方法就是合约里面定义的方法
+System.out.println(send);
+
+
+
+代币生成代码：https://www.ethereum.org/token#the-code
+
+发币：http://blog.51cto.com/634435/2114100
