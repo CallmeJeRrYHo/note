@@ -1,0 +1,42 @@
+下载：https://www.sonatype.com/download-nexus-repository-trial
+
+解压用命令行进入bin文件里面 执行 nexus.exe /run 指令
+
+默认端口8081
+
+配置maven设置，settings.xml PS：注意使用的maven是哪一个 配置对应位置的maven
+
+
+setting里面 配置好账号密码 id与pom文件里面的id要一致
+
+<servers>  
+     <server>  
+      <id>my-nexus-releases</id>  
+      <username>admin</username>  
+      <password>admin123</password>  
+    </server>  
+    <server>  
+      <id>my-nexus-snapshot</id>  
+      <username>admin</username>  
+      <password>admin123</password>  
+    </server>  
+</servers> 
+
+配置pom文件里面的上传设置
+
+   <distributionManagement>
+        <repository>
+            <id>aa</id>
+            <name>java base ch01 release</name>
+            <url>http://localhost:8081/repository/maven-releases/</url>
+        </repository>
+        <!--<snapshotRepository>-->
+            <!--<id>java-base-ch01-snapshot</id>-->
+            <!--<name>java base ch01 snapshot</name>-->
+            <!--<url>http://192.168.0.223:8081/repository/maven-snapshots/</url>-->
+        <!--</snapshotRepository>-->
+
+    </distributionManagement>
+
+PS：注意版本号 修改一下 不是的话很容易冲突
+	设置nexus里面的库设置成允许重复，不是的话有可能报错

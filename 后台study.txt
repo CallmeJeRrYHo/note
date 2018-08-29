@@ -17,3 +17,12 @@
 	redis 加锁读取ky 之后remove掉 k，实现第一层筛选
 	private static Object[] lockOj=new Object[length];
 	锁住  lockOj[订单id%lenth];
+
+
+
+3.spring boot 设置debug输出：
+	application-dev.properties文件里面设置需要输出信息的包
+	logging.level.com.yqh.carrier.dao=DEBUG
+	logging.level.com.yqh.util.common=DEBUG
+
+	添加log4j2.xml文件 配置需要输出的level log文件等

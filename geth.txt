@@ -33,3 +33,6 @@ System.out.println(send);
 代币生成代码：https://www.ethereum.org/token#the-code
 
 发币：http://blog.51cto.com/634435/2114100
+
+
+测试网络发币：https://blog.csdn.net/liaodehong/article/details/78765021
