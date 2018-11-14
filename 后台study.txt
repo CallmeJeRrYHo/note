@@ -26,3 +26,70 @@
 	logging.level.com.yqh.util.common=DEBUG
 
 	添加log4j2.xml文件 配置需要输出的level log文件等
+
+
+4.按天统计 ex:2018-7-1 2018-7-2 2018-7-3.....
+	以，分割传进存储过程
+	使用存储过程 生成 一个临时表保存这些日期 再根据这些日期left join所需要统计的数据 得到 按天排序的统计数据
+
+
+5.spring boot设置映射静态文件 继承 WebMvcConfigurer 接口
+	registry.addResourceHandler("/upload/**").addResourceLocations(upload_file_path);
+
+
+6.mybatis plus3.x 进行分页的时候需要添加一个@Configuration
+	
+@Configuration
+public class PageConfiguration {
+    @Bean
+    public PaginationInterceptor paginationInterceptor() {
+        PaginationInterceptor page = new PaginationInterceptor();
+        page.setDialectType("mysql");
+        return page;
+    }
+}
+
+7.spring boot 异常统一处理 
+	@ControllerAdvice 异统一处理类定义，不用每个controller单独写一个异常的处理
+	新建一个异常处理类
+	@ResponseStatus(value = HttpStatus.BAD_GATEWAY)
+	处理异常时返回的http状态码,ps:处理类方法里面的标注优先级高与异常类里面的标注
+	@org.springframework.web.bind.annotation.ExceptionHandler(value = YqhException.class)
+	定义某类异常的处理方法
+	注意：需要加@ResponseBody 才能把错误内容变成json返回，不加会默认按页面方式跳转
+
+
+8.spring boot 2.x logging输出到文件 配置logging.path 和logging.file 文件到达10M会被分割 
+
+9.maven启动失败后可以尝试使用命令清除本地缓存 之后如果还不行 可以进maven文件夹删除一些报错的依赖 重新下载
+
+
+10.mbp 使用iPage 的时候 如果同时需要排序，请在ipage变量里面调用方法 而不是在xml里面添加
+
+
+11.spring boot 返回实体类 null转空串
+
+@Configuration
+public class JacksonConfig {
+    @Bean
+    @Primary
+    @ConditionalOnMissingBean(ObjectMapper.class)
+    public ObjectMapper jacksonObjectMapper(Jackson2ObjectMapperBuilder builder) {
+        ObjectMapper objectMapper = builder.createXmlMapper(false).build();
+        objectMapper.getSerializerProvider().setNullValueSerializer(new JsonSerializer<Object>() {
+            @Override
+            public void serialize(Object o, JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException, JsonProcessingException {
+                jsonGenerator.writeString("");
+            }
+        });
+        return objectMapper;
+    }
+}
+
+12.redis默认连接绑定120.0.0.1 使用192.....的地址会被屏蔽，为了保存安全性，需要连接其他服务器的redis需要在配置文件添加对应的绑定地址
+
+13.dubbo需要保持版本的一直才能让消费者和提供者进行交互，可以检查本地maven与仓库maven是否版本统一
+
+14.zookeeper注册的时候可能会吧电脑虚拟机的地址注册进去，所以在开启服务的时候应该关闭虚拟机的网络配置
+
+15.java -jar 命令使用默认的main方法启动 可以使用-cp 加 main方法所在的类名进行启动

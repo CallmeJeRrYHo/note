@@ -17,3 +17,4 @@
             </resource>
         </resources>
     </build>
+3.controller 不要放在application 同级 好像会扫描不到
