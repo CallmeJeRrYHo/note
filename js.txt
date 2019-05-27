@@ -1,0 +1,5 @@
+用jq对form表达进行校验 使用jQuery Validate：
+在对应需要校验的控件加参数
+在js中对form表达调用validate（）
+改变提示语言 需要引入不同的message.js
+submitHandler: 方法里面重新进行ajax提交

@@ -122,3 +122,25 @@ public class JacksonConfig {
 22.maven有问题 1刷新项目 2compilemaven 3重启idea
 
 23.thym  js中使用spring security 里面的一些方法 [[${#authorization.expression('isAuthenticated()')}]];
+
+24.数据解耦，如果某些基础数据需要进行扩展，可以使用一个扩展字段保存json格式数据
+如果需要对扩展字段进行筛选查询，可以创建基础数据的扩展表保存扩展所需的k-v
+ex：create table unit_structure_extension
+(
+   id                   int not null,
+   unit_structure_id    int,
+   key                  varchar(64),
+   value                varchar(64),
+   comment              varchar(512) comment '备注',
+   status               int,
+   create_time          datetime,
+   modify_time          datetime,
+   primary key (id)
+);
+
+25.统一错误页面上传到正式环境返回空白：可能是ng拦截了非200的请求 返回了自定义的错误页面
+
+26.后台校验实体类，如果需要获取自定义的message 在Controller的方法的Bean前面加入@Valid注解，注意！如果要获取错误消息，注入的返回对象必须与Bean相邻，
+注入的结果可是使用BindResult或者Errors，二者都可以获取错误结果,二者的方法也相同，可以查看BindingResult的源码,
+二者都需要在controller里面对对象进行判断是否含有错误
+ex:    public void importServicePlan(@RequestBody @Valid ImportDesignEntryVo vo , BindingResult result);
